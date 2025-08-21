@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Breaking the Chains - Depression Recovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6B46C1;
+            --secondary: #9333EA;
+            --accent: #F59E0B;
+            --dark: #1F1B2E;
+            --light: #F3E8FF;
+            --text: #374151;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gradient: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 50%, #DDD6FE 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 70px;
+        }
+
+        .screen {
+            display: none;
+            min-height: calc(100vh - 70px);
+            padding: 20px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .audio-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .audio-toggle:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--card-shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(107, 70, 193, 0.3);
+        }
+
+        .feature-card .icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .feature-card p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--card-shadow);
+            display: inline-block;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(107, 70, 193, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: var(--light);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .nav-item .label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--light);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .devotional-day {
+            background: linear-gradient(135deg, #F3E8FF, #E9D5FF);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scripture-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .mood-tracker {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .mood-option {
+            text-align: center;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .mood-option:hover {
+            background: var(--light);
+            transform: scale(1.1);
+        }
+
+        .mood-option.selected {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .mood-option .emoji {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .journal-entry {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid var(--light);
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .journal-entry:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .prayer-prompt {
+            background: linear-gradient(135deg, var(--light), white);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .scripture-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scripture-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .scripture-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: var(--light);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: var(--gradient);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .date-display {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .resource-link {
+            display: block;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: var(--text);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .resource-link:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 24px; }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .modal-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="screen active">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Breaking the Chains</h1>
+            <p>Your Journey from Darkness to Light</p>
+        </div>
+        
+        <div class="card" style="text-align: center; padding: 40px;">
+            <h2 style="color: var(--primary); margin-bottom: 20px; font-size: 32px;">⛓️‍💥</h2>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">You Are Not Alone</h2>
+            <p style="line-height: 1.8; color: var(--text); margin-bottom: 25px;">
+                Depression may feel like chains binding you, but there is hope. 
+                This app is your companion on the journey to freedom, offering daily 
+                devotionals, mood tracking, prayer support, and Scripture to light your path.
+            </p>
+            <div class="scripture-box">
+                "The Lord is close to the brokenhearted and saves those who are crushed in spirit."
+                <br><strong>- Psalm 34:18</strong>
+            </div>
+            <button class="btn" onclick="startJourney()">Begin Your Journey</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Your Recovery Dashboard</h1>
+            <p id="dashboardDate"></p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar">Loading...</div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card" onclick="showScreen('devotionalScreen')">
+                <div class="icon">📖</div>
+                <h3>Daily Devotion</h3>
+                <p>30-day journey</p>
+            </div>
+            <div class="feature-card" onclick="showScreen('moodScreen')">
+                <div class="icon">💭</div>
+                <h3>Mood Tracker</h3>
+                <p>Track feelings</p>
+            </div>
+            <div class="feature-card" onclick="showScreen('journalScreen')">
+                <div class="icon">✍️</div>
+                <h3>Journal</h3>
+                <p>Express yourself</p>
+            </div>
+            <div class="feature-card" onclick="showScreen('prayerScreen')">
+                <div class="icon">🙏</div>
+                <h3>Prayer Prompts</h3>
+                <p>Guided prayers</p>
+            </div>
+            <div class="feature-card" onclick="showScreen('scriptureScreen')">
+                <div class="icon">✨</div>
+                <h3>Scripture Lifelines</h3>
+                <p>God's promises</p>
+            </div>
+            <div class="feature-card" onclick="showScreen('progressScreen')">
+                <div class="icon">📊</div>
+                <h3>My Progress</h3>
+                <p>View journey</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Today's Encouragement</h3>
+            <p style="line-height: 1.6;" id="dailyEncouragement"></p>
+        </div>
+    </div>
+
+    <!-- Devotional Screen -->
+    <div id="devotionalScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>30-Day Devotional Journey</h1>
+            <p>Daily hope and healing</p>
+        </div>
+
+        <div class="card">
+            <div class="date-display" id="devotionalDay">Day 1</div>
+            <div id="devotionalContent"></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="previousDevotional()">← Previous</button>
+                <button class="btn" onclick="nextDevotional()">Next →</button>
+            </div>
+        </div>
+
+        <button class="btn" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Mood Tracker Screen -->
+    <div id="moodScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>How Are You Feeling?</h1>
+            <p>Track your emotional journey</p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 20px;">Select Your Current Mood</h3>
+            <div class="mood-tracker">
+                <div class="mood-option" onclick="selectMood('hopeless', '😔')">
+                    <span class="emoji">😔</span>
+                    <span>Hopeless</span>
+                </div>
+                <div class="mood-option" onclick="selectMood('sad', '😢')">
+                    <span class="emoji">😢</span>
+                    <span>Sad</span>
+                </div>
+                <div class="mood-option" onclick="selectMood('anxious', '😰')">
+                    <span class="emoji">😰</span>
+                    <span>Anxious</span>
+                </div>
+                <div class="mood-option" onclick="selectMood('neutral', '😐')">
+                    <span class="emoji">😐</span>
+                    <span>Neutral</span>
+                </div>
+                <div class="mood-option" onclick="selectMood('okay', '🙂')">
+                    <span class="emoji">🙂</span>
+                    <span>Okay</span>
+                </div>
+                <div class="mood-option" onclick="selectMood('hopeful', '😊')">
+                    <span class="emoji">😊</span>
+                    <span>Hopeful</span>
+                </div>
+            </div>
+            
+            <div id="moodResponse" style="margin-top: 20px;"></div>
+            
+            <h3 style="color: var(--primary); margin: 20px 0 15px;">Add Notes (Optional)</h3>
+            <textarea class="journal-entry" id="moodNotes" placeholder="What's contributing to this feeling?"></textarea>
+            
+            <button class="btn" onclick="saveMood()" style="width: 100%; margin-top: 15px;">Save Mood Entry</button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Journal Screen -->
+    <div id="journalScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Your Personal Journal</h1>
+            <p>A safe space for your thoughts</p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Today's Entry</h3>
+            <p style="color: var(--text); margin-bottom: 15px; font-style: italic;">
+                Write freely. This is your private space to express whatever is on your heart.
+            </p>
+            <textarea class="journal-entry" id="journalEntry" placeholder="Start writing..." style="min-height: 250px;"></textarea>
+            <button class="btn" onclick="saveJournal()" style="width: 100%; margin-top: 15px;">Save Entry</button>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Journal Prompts</h3>
+            <ul style="line-height: 2; color: var(--text);">
+                <li>What am I grateful for today, even in small things?</li>
+                <li>What emotions am I experiencing right now?</li>
+                <li>What would I tell a friend going through this?</li>
+                <li>Where did I see God's presence today?</li>
+                <li>What is one small step I can take tomorrow?</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Prayer Prompts Screen -->
+    <div id="prayerScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Guided Prayer</h1>
+            <p>Let your heart speak to God</p>
+        </div>
+
+        <div class="prayer-prompt">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Prayer for Hope</h3>
+            <p style="line-height: 1.8;">
+                Lord, in this valley of shadows, I reach out to You. When hope feels distant, 
+                remind me that You are near. Help me to trust that this season will pass and 
+                that Your love remains constant. Give me strength for today and hope for tomorrow. 
+                Amen.
+            </p>
+        </div>
+
+        <div class="prayer-prompt">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Prayer for Strength</h3>
+            <p style="line-height: 1.8;">
+                Heavenly Father, I feel weak and overwhelmed. Your Word says that when I am weak, 
+                then I am strong in You. Pour Your strength into my weary soul. Help me to lean 
+                on You completely and find my rest in Your presence. Amen.
+            </p>
+        </div>
+
+        <div class="prayer-prompt">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Prayer for Peace</h3>
+            <p style="line-height: 1.8;">
+                Prince of Peace, calm the storm within me. When anxiety rises and thoughts race, 
+                be my anchor. Help me to cast all my cares upon You, knowing that You care for me. 
+                Fill me with Your peace that surpasses all understanding. Amen.
+            </p>
+        </div>
+
+        <div class="prayer-prompt">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Prayer for Healing</h3>
+            <p style="line-height: 1.8;">
+                Great Physician, touch my mind, body, and spirit with Your healing power. 
+                Restore what depression has taken. Renew my joy, rebuild my hope, and help 
+                me to see myself through Your eyes of love. I trust in Your healing process. 
+                Amen.
+            </p>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, var(--light), white);">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Create Your Own Prayer</h3>
+            <textarea class="journal-entry" id="personalPrayer" placeholder="Write your prayer here..."></textarea>
+            <button class="btn" onclick="savePrayer()" style="width: 100%; margin-top: 15px;">Save Prayer</button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Scripture Lifelines Screen -->
+    <div id="scriptureScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Scripture Lifelines</h1>
+            <p>God's promises for every emotion</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Hopeless</h4>
+            <p>"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future." - Jeremiah 29:11</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Alone</h4>
+            <p>"Be strong and courageous. Do not be afraid or terrified because of them, for the Lord your God goes with you; he will never leave you nor forsake you." - Deuteronomy 31:6</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Worthless</h4>
+            <p>"For you created my inmost being; you knit me together in my mother's womb. I praise you because I am fearfully and wonderfully made." - Psalm 139:13-14</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Anxious</h4>
+            <p>"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." - Philippians 4:6</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Weak</h4>
+            <p>"But he said to me, 'My grace is sufficient for you, for my power is made perfect in weakness.'" - 2 Corinthians 12:9</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Need Peace</h4>
+            <p>"Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid." - John 14:27</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Feel Overwhelmed</h4>
+            <p>"Come to me, all you who are weary and burdened, and I will give you rest." - Matthew 11:28</p>
+        </div>
+
+        <div class="scripture-card" onclick="expandScripture(this)">
+            <h4>When You Need Strength</h4>
+            <p>"I can do all this through him who gives me strength." - Philippians 4:13</p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Progress Screen -->
+    <div id="progressScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Your Journey Progress</h1>
+            <p>Celebrating every step forward</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px;">
+            <div class="stat-card">
+                <div class="stat-number" id="daysActive">0</div>
+                <div class="stat-label">Days Active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="devotionsRead">0</div>
+                <div class="stat-label">Devotions Read</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="moodEntries">0</div>
+                <div class="stat-label">Mood Entries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="journalEntries">0</div>
+                <div class="stat-label">Journal Entries</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Recent Mood Trend</h3>
+            <div id="moodTrend" style="padding: 20px; text-align: center; color: var(--text);">
+                <p>Continue tracking your moods to see trends over time.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Milestones Achieved</h3>
+            <div id="milestones"></div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Crisis Screen -->
+    <div id="crisisScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Crisis Support</h1>
+            <p>You don't have to face this alone</p>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, #FEE2E2, #FECACA);">
+            <h3 style="color: var(--danger); margin-bottom: 15px;">⚠️ If You're In Crisis</h3>
+            <p style="line-height: 1.8; margin-bottom: 20px;">
+                If you are in crisis or having thoughts of self-harm, please reach out for help immediately. 
+                You are valuable, you are loved, and there is hope.
+            </p>
+            <p style="font-weight: bold; color: var(--danger);">
+                Please contact your local crisis helpline for immediate support.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">Coping Strategies</h3>
+            <ul style="line-height: 2; color: var(--text);">
+                <li>🫂 Reach out to a trusted friend or family member</li>
+                <li>📞 Call a counselor or pastor</li>
+                <li>🚶 Take a walk in nature</li>
+                <li>🎵 Listen to uplifting music</li>
+                <li>✍️ Write in your journal</li>
+                <li>🙏 Pray or meditate on Scripture</li>
+                <li>🏥 Seek professional help when needed</li>
+            </ul>
+        </div>
+
+        <div class="scripture-box">
+            "The Lord is my light and my salvation—whom shall I fear? The Lord is the stronghold of my life—of whom shall I be afraid?"
+            <br><strong>- Psalm 27:1</strong>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Resources Screen -->
+    <div id="resourcesScreen" class="screen">
+        <div class="header">
+            <button class="audio-toggle" onclick="toggleAudio()">🔊</button>
+            <h1>Helpful Resources</h1>
+            <p>Tools and support for your journey</p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 20px;">Understanding Depression</h3>
+            <p style="line-height: 1.8; margin-bottom: 15px;">
+                Depression is a real medical condition that affects millions of people. It's not a sign of weakness 
+                or lack of faith. Just as you would seek help for a physical illness, it's important to seek help 
+                for mental health challenges.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 20px;">Self-Care Practices</h3>
+            <div class="resource-link">
+                <strong>🌅 Morning Routine</strong>
+                <p>Start your day with prayer, gratitude, and gentle movement</p>
+            </div>
+            <div class="resource-link">
+                <strong>🥗 Nutrition</strong>
+                <p>Nourish your body with healthy foods that support mental wellness</p>
+            </div>
+            <div class="resource-link">
+                <strong>😴 Sleep Hygiene</strong>
+                <p>Establish a calming bedtime routine for better rest</p>
+            </div>
+            <div class="resource-link">
+                <strong>🏃 Exercise</strong>
+                <p>Regular movement releases endorphins and improves mood</p>
+            </div>
+            <div class="resource-link">
+                <strong>🤝 Community</strong>
+                <p>Stay connected with supportive friends and faith community</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary); margin-bottom: 20px;">When to Seek Professional Help</h3>
+            <p style="line-height: 1.8;">
+                Consider reaching out to a mental health professional if you experience:
+            </p>
+            <ul style="line-height: 2; margin-top: 15px; color: var(--text);">
+                <li>Persistent sadness lasting more than two weeks</li>
+                <li>Difficulty performing daily activities</li>
+                <li>Changes in sleep or appetite</li>
+                <li>Thoughts of self-harm</li>
+                <li>Withdrawal from loved ones</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showScreen('dashboardScreen')" style="width: 100%;">Back to Dashboard</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="showScreen('dashboardScreen')">
+            <span class="icon">🏠</span>
+            <span class="label">Home</span>
+        </div>
+        <div class="nav-item" onclick="showScreen('crisisScreen')">
+            <span class="icon">🆘</span>
+            <span class="label">Crisis</span>
+        </div>
+        <div class="nav-item" onclick="showScreen('resourcesScreen')">
+            <span class="icon">📚</span>
+            <span class="label">Resources</span>
+        </div>
+        <div class="nav-item" onclick="showInfoModal()">
+            <span class="icon">ℹ️</span>
+            <span class="label">Info</span>
+        </div>
+        <div class="nav-item" onclick="showAboutModal()">
+            <span class="icon">✨</span>
+            <span class="label">About</span>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('infoModal')">×</button>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">How to Use This App</h2>
+            
+            <h3 style="color: var(--secondary); margin-top: 20px;">What This App Does</h3>
+            <p style="line-height: 1.8; margin-bottom: 15px;">
+                Breaking the Chains is a comprehensive depression recovery companion that provides:
+            </p>
+            <ul style="line-height: 2; margin-bottom: 20px;">
+                <li>30-day devotional journey with daily Scripture and reflection</li>
+                <li>Mood tracking to monitor your emotional progress</li>
+                <li>Personal journal for expressing thoughts and feelings</li>
+                <li>Guided prayer prompts for spiritual support</li>
+                <li>Scripture lifelines for different emotions</li>
+                <li>Progress tracking to celebrate your journey</li>
+            </ul>
+
+            <h3 style="color: var(--secondary); margin-top: 20px;">How to Navigate</h3>
+            <p style="line-height: 1.8; margin-bottom: 15px;">
+                Use the dashboard to access all features. The bottom navigation bar is always available 
+                for quick access to crisis support and resources. Your progress is automatically saved locally.
+            </p>
+
+            <h3 style="color: var(--secondary); margin-top: 20px;">Install on Your Phone</h3>
+            <p style="line-height: 1.8;">
+                <strong>iPhone:</strong> Tap Share → Add to Home Screen<br>
+                <strong>Android:</strong> Tap Menu (⋮) → Add to Home Screen
+            </p>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('aboutModal')">×</button>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">About Breaking the Chains</h2>
+            
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h3 style="color: var(--secondary); margin-bottom: 10px;">Made with 💜 by Justin</h3>
+                <p style="color: var(--text);">Depths to Heights</p>
+            </div>
+
+            <div class="scripture-box">
+                <strong>Our Mission:</strong><br>
+                To provide hope, healing, and spiritual support for those battling depression, 
+                reminding them that chains can be broken and joy can return.
+            </div>
+
+            <div style="margin: 25px 0;">
+                <p style="line-height: 1.8; color: var(--text);">
+                    At Depths to Heights, we believe in the transformative power of faith combined 
+                    with practical tools for mental wellness. This app is our gift to anyone walking 
+                    through the valley of depression.
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="https://depthstoheights.org" target="_blank" class="btn btn-secondary">
+                    Visit Our Website
+                </a>
+                <p style="margin: 15px 0; color: var(--text);">
+                    Contact: depthstoheights@gmail.com
+                </p>
+                <button class="btn" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank')">
+                    Support Our Mission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAA==" type="audio/wav">
+    </audio>
+
+    <script>
+        // App State
+        let appState = {
+            currentScreen: 'welcomeScreen',
+            currentDevotional: 1,
+            selectedMood: null,
+            audioEnabled: false,
+            startDate: null,
+            devotionalsRead: [],
+            moodHistory: [],
+            journalEntries: [],
+            prayers: []
+        };
+
+        // Devotional Content
+        const devotionals = [
+            {
+                day: 1,
+                title: "You Are Seen",
+                scripture: "The Lord sees you in your pain. 'You are the God who sees me' - Genesis 16:13",
+                content: "Today, remember that God sees you in your struggle. He knows every tear, every sleepless night, every moment of despair. You are not invisible to Him. He is El Roi, the God who sees, and He is with you in this valley. Take comfort knowing that your pain doesn't go unnoticed by the One who loves you most.",
+                prayer: "Lord, thank You for seeing me. When I feel invisible and alone, remind me of Your constant presence. Help me to feel Your love today.",
+                reflection: "Where have you felt unseen lately? How does knowing God sees you change your perspective?"
+            },
+            {
+                day: 2,
+                title: "Grace for Today",
+                scripture: "'My grace is sufficient for you, for my power is made perfect in weakness.' - 2 Corinthians 12:9",
+                content: "You don't need strength for tomorrow or next week - you just need grace for today. God's grace is perfectly measured for this moment. In your weakness, His strength shines brightest. Let go of the pressure to be strong and lean into His sufficient grace.",
+                prayer: "Father, I receive Your grace for today. I admit my weakness and ask for Your strength to carry me through these hours.",
+                reflection: "What do you need God's grace for specifically today? Not tomorrow, just today."
+            },
+            {
+                day: 3,
+                title: "The Valley's Purpose",
+                scripture: "'Even though I walk through the valley of the shadow of death, I will fear no evil, for you are with me' - Psalm 23:4",
+                content: "Notice David says 'through' the valley, not 'in' the valley. This is temporary. You're passing through. Valleys are places of growth - rivers flow through valleys, making them fertile. Even in this dark season, God is cultivating something in you.",
+                prayer: "Lord, help me trust that this valley has a purpose and an end. Give me courage to keep walking through.",
+                reflection: "What might God be teaching you in this valley that you couldn't learn on the mountaintop?"
+            },
+            {
+                day: 4,
+                title: "Permission to Lament",
+                scripture: "'How long, Lord? Will you forget me forever? How long will you hide your face from me?' - Psalm 13:1",
+                content: "David asked God 'how long' four times in two verses. It's okay to question, to cry out, to express your pain to God. He's big enough for your honest emotions. Lament is not lack of faith - it's bringing your real self to a real God.",
+                prayer: "God, here's my honest heart today: [speak your true feelings to Him]. Thank You for being big enough for my questions and pain.",
+                reflection: "What honest questions or feelings do you need to express to God today?"
+            },
+            {
+                day: 5,
+                title: "Small Steps Count",
+                scripture: "'Forget the former things; do not dwell on the past. See, I am doing a new thing!' - Isaiah 43:18-19",
+                content: "Recovery isn't usually dramatic. It's getting out of bed when you don't want to. It's taking a shower. It's sending one text. It's reading this devotional. Every small step forward matters to God. He celebrates your tiny victories.",
+                prayer: "Lord, help me see that small steps are still steps. Give me strength for just one small positive action today.",
+                reflection: "What is one small step you can take today toward healing?"
+            },
+            {
+                day: 6,
+                title: "Held in the Storm",
+                scripture: "'When you pass through the waters, I will be with you; and when you pass through the rivers, they will not sweep over you.' - Isaiah 43:2",
+                content: "God doesn't promise the absence of storms, but His presence in them. You may feel like you're drowning, but His hands are holding you up. The waters are real, but so is His promise to not let them overcome you.",
+                prayer: "Jesus, be my anchor in this storm. When the waves feel overwhelming, help me feel Your steady presence.",
+                reflection: "How have you experienced God's presence in past storms? How might He be present now?"
+            },
+            {
+                day: 7,
+                title: "The Gift of Today",
+                scripture: "'Therefore do not worry about tomorrow, for tomorrow will worry about itself.' - Matthew 6:34",
+                content: "Depression often makes us fear the future - 'Will I always feel this way?' Jesus invites you to release tomorrow's worries. Today has enough challenge. Focus on this day, this hour, this moment. God's mercies are new every morning.",
+                prayer: "Father, help me stay present today. When my mind races to tomorrow's fears, bring me back to Your grace for right now.",
+                reflection: "What worries about tomorrow can you surrender to God today?"
+            },
+            {
+                day: 8,
+                title: "Your Worth Remains",
+                scripture: "'For you created my inmost being; you knit me together in my mother's womb.' - Psalm 139:13",
+                content: "Depression lies about your worth. It says you're a burden, a failure, worthless. But God knit you together with purpose. Your value doesn't decrease because of your mental health. You are fearfully and wonderfully made, even on your hardest days.",
+                prayer: "Creator God, remind me of my inherent worth. Help me see myself through Your eyes of love, not through the lens of depression.",
+                reflection: "What lies about your worth do you need to replace with God's truth today?"
+            },
+            {
+                day: 9,
+                title: "The Ministry of Presence",
+                scripture: "'Two are better than one... If either of them falls down, one can help the other up.' - Ecclesiastes 4:9-10",
+                content: "Isolation feeds depression, but reaching out feels impossible. Remember: you don't need to be 'fixed' to deserve connection. Let someone sit with you in your pain. Sometimes healing comes through the simple presence of another person.",
+                prayer: "Lord, give me courage to reach out to someone today, even if it's just to say 'I'm struggling.'",
+                reflection: "Who is one person you could connect with today, even briefly?"
+            },
+            {
+                day: 10,
+                title: "God's Timing",
+                scripture: "'He has made everything beautiful in its time.' - Ecclesiastes 3:11",
+                content: "Your healing timeline may not match your expectations. That's okay. God's timing is perfect, even when it feels slow. He's not in a hurry. He's more interested in deep, lasting healing than quick fixes. Trust His process.",
+                prayer: "Patient Father, help me trust Your timing. When I want to rush healing, help me rest in Your perfect pace.",
+                reflection: "Where do you need patience with God's timing in your healing journey?"
+            },
+            {
+                day: 11,
+                title: "Carried by Love",
+                scripture: "'He tends his flock like a shepherd: He gathers the lambs in his arms and carries them close to his heart.' - Isaiah 40:11",
+                content: "When you can't walk, let Him carry you. Picture yourself as a lamb in the Shepherd's arms, held close to His heart. You don't have to be strong. You don't have to have it together. Just let yourself be carried by Love.",
+                prayer: "Good Shepherd, I'm tired of trying to be strong. Carry me today. Let me rest in Your arms.",
+                reflection: "What would it look like to let God carry you through this day?"
+            },
+            {
+                day: 12,
+                title: "Truth Over Feelings",
+                scripture: "'Then you will know the truth, and the truth will set you free.' - John 8:32",
+                content: "Your feelings are valid, but they're not always true. Depression distorts reality. God's Word is your anchor of truth. You may feel abandoned, but He promises never to leave you. You may feel hopeless, but He is your living hope.",
+                prayer: "Lord, help me distinguish between what I feel and what is true. Anchor me in Your unchanging Word.",
+                reflection: "What feeling do you need to counter with God's truth today?"
+            },
+            {
+                day: 13,
+                title: "The Comfort of Tears",
+                scripture: "'You keep track of all my sorrows. You have collected all my tears in your bottle.' - Psalm 56:8",
+                content: "Your tears matter to God. He collects them, treasures them, remembers them. Crying isn't weakness - it's release. Let the tears flow. God is catching every one. They're precious to Him because you're precious to Him.",
+                prayer: "Comforting Father, thank You for valuing my tears. Help me release what needs to be released through them.",
+                reflection: "What tears have you been holding back that need to be released to God?"
+            },
+            {
+                day: 14,
+                title: "Halfway Through",
+                scripture: "'Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.' - Galatians 6:9",
+                content: "You're halfway through this devotional journey. That's an accomplishment worth celebrating. Keep going. Some days, just continuing is victory. Your persistence matters. The harvest of healing is coming.",
+                prayer: "Lord, thank You for bringing me this far. Give me strength to continue, one day at a time.",
+                reflection: "What small progress can you celebrate today, even if it's just making it to day 14?"
+            },
+            {
+                day: 15,
+                title: "Wrestling with God",
+                scripture: "'I will not let you go unless you bless me.' - Genesis 32:26",
+                content: "Jacob wrestled with God all night and walked away limping but blessed. It's okay to wrestle with God in your depression. Bring Him your anger, your disappointment, your 'why' questions. He can handle the wrestling match.",
+                prayer: "God, I'm wrestling with You about [share your struggle]. I won't let go until You bless me with peace.",
+                reflection: "What are you wrestling with God about? What blessing do you need from Him?"
+            },
+            {
+                day: 16,
+                title: "The Power of 'Yet'",
+                scripture: "'We are hard pressed on every side, but not crushed; perplexed, but not in despair.' - 2 Corinthians 4:8",
+                content: "You may not be healed yet. You may not feel joy yet. You may not see hope yet. 'Yet' is a powerful word - it acknowledges the present while leaving room for change. You're not where you want to be, but you're not where you were.",
+                prayer: "Lord, help me hold onto 'yet.' I may not be whole yet, but I trust You're working.",
+                reflection: "What 'not yet' in your life needs to become a 'yet' of hope?"
+            },
+            {
+                day: 17,
+                title: "Borrowed Faith",
+                scripture: "'When Jesus saw their faith, he said to the paralyzed man, 'Son, your sins are forgiven.'' - Mark 2:5",
+                content: "The paralyzed man was healed because of his friends' faith. When your faith feels too weak, borrow from others. Let their prayers carry you. Let their belief stand in for yours. It's okay to need others' faith right now.",
+                prayer: "Jesus, my faith feels so small. Thank You for the faith of others carrying me to You.",
+                reflection: "Whose faith can you lean on today when yours feels insufficient?"
+            },
+            {
+                day: 18,
+                title: "Sacred Rest",
+                scripture: "'Come to me, all you who are weary and burdened, and I will give you rest.' - Matthew 11:28",
+                content: "Rest isn't laziness when you're fighting depression - it's survival. Jesus invites you to rest in Him. Not to do more, try harder, or push through. Just rest. Let Him carry the burden while you rest.",
+                prayer: "Lord Jesus, I accept Your invitation to rest. Help me release the guilt and simply rest in You.",
+                reflection: "What would sacred rest look like for you today?"
+            },
+            {
+                day: 19,
+                title: "Gentle With Yourself",
+                scripture: "'A bruised reed he will not break, and a smoldering wick he will not snuff out.' - Isaiah 42:3",
+                content: "God is gentle with bruised reeds and dimly burning wicks. Be gentle with yourself too. You're not broken beyond repair. You're not too damaged. God specializes in gently restoring what seems beyond hope.",
+                prayer: "Gentle Savior, help me treat myself with the same gentleness You show me.",
+                reflection: "Where do you need to be more gentle with yourself today?"
+            },
+            {
+                day: 20,
+                title: "Hidden Growth",
+                scripture: "'Unless a kernel of wheat falls to the ground and dies, it remains only a single seed. But if it dies, it produces many seeds.' - John 12:24",
+                content: "Seeds grow in darkness before breaking through soil. Your growth may be happening underground, invisible but real. What feels like death may be preparation for new life. Trust the hidden work God is doing.",
+                prayer: "Lord, help me trust the growth I cannot yet see. Work in the hidden places of my heart.",
+                reflection: "What hidden growth might be happening in you during this dark season?"
+            },
+            {
+                day: 21,
+                title: "Three Weeks Strong",
+                scripture: "'For I can do everything through Christ, who gives me strength.' - Philippians 4:13",
+                content: "Three weeks of showing up, reading, praying, trying. That takes strength - His strength in you. You're stronger than depression tells you. The fact that you're here, reading this, proves Christ's strength is at work in you.",
+                prayer: "Jesus, thank You for Your strength carrying me these three weeks. Continue to be my strength.",
+                reflection: "How have you experienced Christ's strength in unexpected ways lately?"
+            },
+            {
+                day: 22,
+                title: "The Turning Point",
+                scripture: "'Weeping may stay for the night, but rejoicing comes in the morning.' - Psalm 30:5",
+                content: "You may not see it yet, but morning is coming. The night of weeping has an expiration date. Joy will return - maybe differently than before, maybe slowly, but it will come. Hold on for the morning.",
+                prayer: "Lord, help me believe that morning is coming even when the night feels endless.",
+                reflection: "What small glimpses of morning light have you noticed, however faint?"
+            },
+            {
+                day: 23,
+                title: "Your Story Matters",
+                scripture: "'They triumphed over him by the blood of the Lamb and by the word of their testimony.' - Revelation 12:11",
+                content: "Your story - including this chapter of depression - matters. One day, your testimony of God's faithfulness in the darkness will bring hope to someone else. Your pain has purpose beyond what you can see now.",
+                prayer: "Lord, redeem my story. Use even this painful chapter for Your glory and others' good.",
+                reflection: "How might God use your current struggle to help someone else in the future?"
+            },
+            {
+                day: 24,
+                title: "Surrounded by Love",
+                scripture: "'The Lord's unfailing love surrounds the one who trusts in him.' - Psalm 32:10",
+                content: "You are surrounded. Not by darkness, though it may feel that way, but by God's unfailing love. It's above you, beneath you, beside you, within you. You're swimming in an ocean of divine love, even when you can't feel it.",
+                prayer: "Father, open my eyes to see Your surrounding love. Help me trust what I cannot always feel.",
+                reflection: "If God's love surrounds you, what does that mean for this moment?"
+            },
+            {
+                day: 25,
+                title: "Almost There",
+                scripture: "'Let us run with perseverance the race marked out for us.' - Hebrews 12:1",
+                content: "You're almost at day 30. When you started, this might have seemed impossible. But look - you're persevering. You're running your race, even if it feels like crawling. Every step forward is victory.",
+                prayer: "Lord, thank You for the perseverance You've given me. Help me finish strong.",
+                reflection: "What has perseverance taught you over these 25 days?"
+            },
+            {
+                day: 26,
+                title: "New Mercies",
+                scripture: "'Because of the Lord's great love we are not consumed, for his compassions never fail. They are new every morning.' - Lamentations 3:22-23",
+                content: "God's mercies aren't recycled - they're brand new each morning. Yesterday's failures, struggles, and setbacks don't carry over. Today's mercy is fresh, specifically designed for today's needs.",
+                prayer: "Merciful God, thank You for fresh mercy this morning. Help me receive it fully.",
+                reflection: "What new mercy do you need to receive from God today?"
+            },
+            {
+                day: 27,
+                title: "Hope Anchored",
+                scripture: "'We have this hope as an anchor for the soul, firm and secure.' - Hebrews 6:19",
+                content: "Hope isn't a feeling - it's an anchor. When the storms of depression rage, you're held secure by hope in Christ. You may drift, but you cannot be swept away. The anchor holds, even when you can't feel it.",
+                prayer: "Lord, be my anchor. When I feel adrift, remind me that Your hope holds me secure.",
+                reflection: "What would change if you viewed hope as an anchor rather than a feeling?"
+            },
+            {
+                day: 28,
+                title: "Treasured and Chosen",
+                scripture: "'You are a chosen people, a royal priesthood, a holy nation, God's special possession.' - 1 Peter 2:9",
+                content: "Depression says you're forgotten, but God says you're chosen. Depression says you're worthless, but God says you're His treasure. Your identity isn't defined by your mental health but by whose you are.",
+                prayer: "Father, remind me of my true identity as Your chosen, treasured child.",
+                reflection: "How does being God's special possession change how you see yourself today?"
+            },
+            {
+                day: 29,
+                title: "The Bigger Picture",
+                scripture: "'And we know that in all things God works for the good of those who love him.' - Romans 8:28",
+                content: "God is writing a story bigger than this chapter. He's working all things - even depression - for good. Not because depression is good, but because He is. Trust the Author to write a beautiful ending.",
+                prayer: "Lord, help me trust that You're working even this for good in ways I cannot yet see.",
+                reflection: "What good might God bring from this difficult season?"
+            },
+            {
+                day: 30,
+                title: "Chains Breaking",
+                scripture: "'So if the Son sets you free, you will be free indeed.' - John 8:36",
+                content: "You made it to day 30. The chains of depression may not be completely broken yet, but they're loosening. Freedom is not just possible - it's promised. The Son is setting you free. It's a process, but it's happening. Keep walking toward freedom. Keep choosing hope. Keep trusting the Chain-Breaker. Your journey continues, but you're not walking alone.",
+                prayer: "Chain-Breaking Savior, thank You for 30 days of Your faithfulness. Continue Your work of freedom in me. I trust You with my ongoing journey.",
+                reflection: "What chains have begun to loosen over these 30 days? What freedom are you walking toward?"
+            }
+        ];
+
+        // Daily Encouragements
+        const encouragements = [
+            "You are braver than you believe, stronger than you seem, and loved more than you know.",
+            "This too shall pass. Storms don't last forever.",
+            "Your story isn't over. This is just a difficult chapter.",
+            "Small steps are still progress. Be proud of yourself for trying.",
+            "You've survived 100% of your worst days. You're doing great.",
+            "It's okay to not be okay. Healing takes time.",
+            "You are not a burden. You are a person worthy of love and support.",
+            "The darkest nights produce the brightest stars.",
+            "Your feelings are valid, but they are not your destiny.",
+            "God's love for you is bigger than your darkest day."
+        ];
+
+        // Initialize App
+        function initApp() {
+            loadState();
+            updateDateTime();
+            updateProgress();
+            setInterval(updateDateTime, 60000);
+            
+            // Set random encouragement
+            const randomEncouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+            const encourgamentEl = document.getElementById('dailyEncouragement');
+            if (encourgamentEl) {
+                encourgamentEl.textContent = randomEncouragement;
+            }
+        }
+
+        // Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            appState.currentScreen = screenId;
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Special screen updates
+            if (screenId === 'devotionalScreen') {
+                loadDevotional(appState.currentDevotional);
+            } else if (screenId === 'progressScreen') {
+                updateProgressStats();
+            }
+            
+            saveState();
+        }
+
+        function startJourney() {
+            if (!appState.startDate) {
+                appState.startDate = new Date().toISOString();
+            }
+            showScreen('dashboardScreen');
+            saveState();
+        }
+
+        // Devotionals
+        function loadDevotional(day) {
+            const devotional = devotionals[day - 1];
+            if (!devotional) return;
+            
+            document.getElementById('devotionalDay').textContent = `Day ${devotional.day}`;
+            
+            const content = `
+                <h2 style="color: var(--primary); margin-bottom: 20px;">${devotional.title}</h2>
+                <div class="scripture-box">
+                    ${devotional.scripture}
+                </div>
+                <p style="line-height: 1.8; margin: 20px 0;">${devotional.content}</p>
+                <div style="background: var(--light); padding: 15px; border-radius: 12px; margin: 20px 0;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Today's Prayer:</h4>
+                    <p style="line-height: 1.6; font-style: italic;">${devotional.prayer}</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--light);">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Reflection:</h4>
+                    <p style="line-height: 1.6;">${devotional.reflection}</p>
+                </div>
+            `;
+            
+            document.getElementById('devotionalContent').innerHTML = content;
+            
+            // Mark as read
+            if (!appState.devotionalsRead.includes(day)) {
+                appState.devotionalsRead.push(day);
+                saveState();
+            }
+        }
+
+        function nextDevotional() {
+            if (appState.currentDevotional < 30) {
+                appState.currentDevotional++;
+                loadDevotional(appState.currentDevotional);
+                saveState();
+            }
+        }
+
+        function previousDevotional() {
+            if (appState.currentDevotional > 1) {
+                appState.currentDevotional--;
+                loadDevotional(appState.currentDevotional);
+                saveState();
+            }
+        }
+
+        // Mood Tracking
+        function selectMood(mood, emoji) {
+            appState.selectedMood = { mood, emoji };
+            
+            // Update UI
+            document.querySelectorAll('.mood-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.mood-option').classList.add('selected');
+            
+            // Show response
+            const responses = {
+                'hopeless': "I'm so sorry you're feeling this way. Remember, feelings are temporary, even when they don't feel like it. You are not alone.",
+                'sad': "It's okay to feel sad. Your feelings are valid. Take it one moment at a time.",
+                'anxious': "Anxiety is difficult. Try taking a few deep breaths. God is with you in this moment.",
+                'neutral': "Neutral is okay. Not every day needs to be amazing. You're doing fine.",
+                'okay': "That's good to hear. Celebrate the okay days - they matter.",
+                'hopeful': "Wonderful! Hold onto this feeling. Hope is powerful, even in small doses."
+            };
+            
+            document.getElementById('moodResponse').innerHTML = `
+                <div style="background: var(--light); padding: 15px; border-radius: 12px;">
+                    <p style="line-height: 1.6;">${responses[mood]}</p>
+                </div>
+            `;
+        }
+
+        function saveMood() {
+            if (!appState.selectedMood) {
+                document.getElementById('moodResponse').innerHTML = `
+                    <div style="background: #FEE2E2; padding: 15px; border-radius: 12px; color: var(--danger);">
+                        Please select a mood first.
+                    </div>
+                `;
+                return;
+            }
+            
+            const notes = document.getElementById('moodNotes').value;
+            const entry = {
+                date: new Date().toISOString(),
+                mood: appState.selectedMood.mood,
+                emoji: appState.selectedMood.emoji,
+                notes: notes
+            };
+            
+            appState.moodHistory.push(entry);
+            saveState();
+            
+            document.getElementById('moodResponse').innerHTML = `
+                <div class="success-message">
+                    Mood entry saved successfully! Keep tracking to see your progress over time.
+                </div>
+            `;
+            
+            document.getElementById('moodNotes').value = '';
+            appState.selectedMood = null;
+            document.querySelectorAll('.mood-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
+
+        // Journal
+        function saveJournal() {
+            const content = document.getElementById('journalEntry').value;
+            if (!content.trim()) {
+                document.getElementById('journalEntry').style.borderColor = 'var(--danger)';
+                return;
+            }
+            
+            const entry = {
+                date: new Date().toISOString(),
+                content: content
+            };
+            
+            appState.journalEntries.push(entry);
+            saveState();
+            
+            // Show success
+            const card = document.getElementById('journalEntry').closest('.card');
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.textContent = 'Journal entry saved! Your thoughts are safe and secure.';
+            card.appendChild(successMsg);
+            
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        }
+
+        // Prayer
+        function savePrayer() {
+            const content = document.getElementById('personalPrayer').value;
+            if (!content.trim()) return;
+            
+            appState.prayers.push({
+                date: new Date().toISOString(),
+                content: content
+            });
+            saveState();
+            
+            // Show success
+            const textarea = document.getElementById('personalPrayer');
+            textarea.value = '';
+            const card = textarea.closest('.card');
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.textContent = 'Your prayer has been saved. God hears you.';
+            card.appendChild(successMsg);
+            
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        }
+
+        // Scripture expansion
+        function expandScripture(card) {
+            card.style.background = 'linear-gradient(135deg, var(--light), white)';
+            card.style.transform = 'scale(1.02)';
+            
+            setTimeout(() => {
+                card.style.background = 'white';
+                card.style.transform = 'scale(1)';
+            }, 2000);
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const daysRead = appState.devotionalsRead.length;
+            const percentage = Math.round((daysRead / 30) * 100);
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = percentage + '%';
+                progressBar.textContent = `${percentage}% Complete`;
+            }
+        }
+
+        function updateProgressStats() {
+            // Calculate days active
+            const startDate = appState.startDate ? new Date(appState.startDate) : new Date();
+            const today = new Date();
+            const daysActive = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            
+            document.getElementById('daysActive').textContent = daysActive;
+            document.getElementById('devotionsRead').textContent = appState.devotionalsRead.length;
+            document.getElementById('moodEntries').textContent = appState.moodHistory.length;
+            document.getElementById('journalEntries').textContent = appState.journalEntries.length;
+            
+            // Update mood trend
+            if (appState.moodHistory.length > 0) {
+                const recentMoods = appState.moodHistory.slice(-7);
+                let trendHTML = '<div style="display: flex; justify-content: space-around; flex-wrap: wrap;">';
+                recentMoods.forEach(mood => {
+                    const date = new Date(mood.date).toLocaleDateString();
+                    trendHTML += `
+                        <div style="text-align: center; margin: 10px;">
+                            <div style="font-size: 32px;">${mood.emoji}</div>
+                            <div style="font-size: 12px; color: var(--text);">${date}</div>
+                        </div>
+                    `;
+                });
+                trendHTML += '</div>';
+                document.getElementById('moodTrend').innerHTML = trendHTML;
+            }
+            
+            // Update milestones
+            const milestones = [];
+            if (daysActive >= 1) milestones.push('🎯 Started your journey');
+            if (appState.devotionalsRead.length >= 7) milestones.push('📖 One week of devotionals');
+            if (appState.devotionalsRead.length >= 15) milestones.push('⭐ Halfway through devotionals');
+            if (appState.moodHistory.length >= 7) milestones.push('💭 Week of mood tracking');
+            if (appState.journalEntries.length >= 5) milestones.push('✍️ Consistent journaling');
+            if (appState.devotionalsRead.length >= 30) milestones.push('🏆 Completed 30-day journey!');
+            
+            let milestonesHTML = '';
+            milestones.forEach(milestone => {
+                milestonesHTML += `<div style="padding: 10px; background: var(--light); border-radius: 8px; margin-bottom: 10px;">${milestone}</div>`;
+            });
+            document.getElementById('milestones').innerHTML = milestonesHTML || '<p style="color: var(--text);">Keep going! Milestones will appear as you progress.</p>';
+        }
+
+        // Date/Time
+        function updateDateTime() {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const dashboardDate = document.getElementById('dashboardDate');
+            if (dashboardDate) {
+                dashboardDate.textContent = dateString;
+            }
+        }
+
+        // Audio
+        function toggleAudio() {
+            appState.audioEnabled = !appState.audioEnabled;
+            const buttons = document.querySelectorAll('.audio-toggle');
+            buttons.forEach(btn => {
+                btn.textContent = appState.audioEnabled ? '🔇' : '🔊';
+            });
+            
+            // Note: Actual audio implementation would go here
+            // For now, just toggle the visual indicator
+        }
+
+        // Modals
+        function showInfoModal() {
+            document.getElementById('infoModal').classList.add('active');
+        }
+
+        function showAboutModal() {
+            document.getElementById('aboutModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Click outside modal to close
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // State Management
+        function saveState() {
+            localStorage.setItem('breakingChainsState', JSON.stringify(appState));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('breakingChainsState');
+            if (saved) {
+                appState = { ...appState, ...JSON.parse(saved) };
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
